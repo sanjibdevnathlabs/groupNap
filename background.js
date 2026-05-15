@@ -1,27 +1,30 @@
-const PROTECTED_URLS = [
-  // Tabs matching these patterns are never discarded.
-  // "meet.google.com",
-  // "docs.google.com",
-];
-
 const MB_PER_TAB = 300;
 
-function isProtected(tab) {
+async function getProtectedUrls() {
+  const { protectedUrls } = await chrome.storage.local.get("protectedUrls");
+  return protectedUrls || [];
+}
+
+function isInternalUrl(url) {
+  if (url.startsWith("chrome://") || url.startsWith("chrome-extension://") || url.startsWith("devtools://")) return true;
+  if (!url.startsWith("http://") && !url.startsWith("https://")) return true;
+  return false;
+}
+
+function isProtected(tab, patterns) {
   if (tab.active || tab.pinned || tab.discarded) return true;
   if (tab.audible) return true;
   const url = tab.url || "";
-  if (url.startsWith("chrome://") || url.startsWith("chrome-extension://") || url.startsWith("devtools://")) return true;
-  if (!url.startsWith("http://") && !url.startsWith("https://")) return true;
-  return PROTECTED_URLS.some((pattern) => url.includes(pattern));
+  if (isInternalUrl(url)) return true;
+  return patterns.some((pattern) => url.includes(pattern));
 }
 
-function isGenuinelyProtected(tab) {
+function isGenuinelyProtected(tab, patterns) {
   if (tab.active || tab.pinned) return true;
   if (tab.audible) return true;
   const url = tab.url || "";
-  if (url.startsWith("chrome://") || url.startsWith("chrome-extension://") || url.startsWith("devtools://")) return true;
-  if (!url.startsWith("http://") && !url.startsWith("https://")) return true;
-  return PROTECTED_URLS.some((pattern) => url.includes(pattern));
+  if (isInternalUrl(url)) return true;
+  return patterns.some((pattern) => url.includes(pattern));
 }
 
 function formatBytes(mb) {
@@ -63,8 +66,9 @@ chrome.tabGroups.onUpdated.addListener(async (group) => {
   }
 
   const tabs = await chrome.tabs.query({ groupId: group.id });
-  const targets = tabs.filter((tab) => !isProtected(tab));
-  const genuinelyProtected = tabs.filter((tab) => !tab.discarded && isGenuinelyProtected(tab)).length;
+  const patterns = await getProtectedUrls();
+  const targets = tabs.filter((tab) => !isProtected(tab, patterns));
+  const genuinelyProtected = tabs.filter((tab) => !tab.discarded && isGenuinelyProtected(tab, patterns)).length;
 
   const results = await Promise.allSettled(
     targets.map((tab) => chrome.tabs.discard(tab.id))

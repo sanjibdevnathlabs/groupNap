@@ -75,14 +75,7 @@ No host permissions. No network requests. No data leaves your device.
 
 ## Configuration
 
-Edit `PROTECTED_URLS` in `background.js` to add sites that should never be napped:
-
-```javascript
-const PROTECTED_URLS = [
-  "meet.google.com",
-  "docs.google.com",
-];
-```
+Click the GroupNap icon → **Protected sites** section at the bottom. Add URL patterns (e.g., `meet.google.com`) to prevent those tabs from ever being napped. Remove with the × button. Stored locally, persists across browser restarts.
 
 ## License
 

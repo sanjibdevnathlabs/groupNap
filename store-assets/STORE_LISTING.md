@@ -24,7 +24,7 @@ Not all tabs should nap. GroupNap automatically skips:
 - Tabs playing audio or video
 - Already-discarded tabs
 - Internal Chrome pages (chrome://, devtools://)
-- Custom URL patterns you configure
+- Custom URL patterns you add via the popup
 
 LIVE SAVINGS DASHBOARD
 Click the GroupNap icon to see:
@@ -56,7 +56,7 @@ WHAT HAPPENS TO NAPPING TABS
 - Scroll position resets to top
 - Login sessions survive (cookies and localStorage are preserved)
 
-TIP: Keep tabs you need always-connected (Slack, Meet) in a group you never collapse, or add their URLs to the PROTECTED_URLS list in the extension.
+TIP: Keep tabs you need always-connected (Slack, Meet) in a group you never collapse, or add their URLs to the Protected Sites list in the popup.
 
 ## Category
 Productivity

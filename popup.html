@@ -64,6 +64,79 @@
       cursor: pointer;
     }
     .reset:hover { border-color: #ef5350; color: #ef5350; }
+    .protected {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #37474f;
+    }
+    .protected .section-label { margin-bottom: 8px; }
+    .add-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .add-row input {
+      flex: 1;
+      background: #37474f;
+      border: 1px solid #546e7a;
+      border-radius: 4px;
+      color: #eceff1;
+      font-size: 12px;
+      padding: 5px 8px;
+      outline: none;
+    }
+    .add-row input::placeholder { color: #607d8b; }
+    .add-row input:focus { border-color: #4CAF50; }
+    .add-row button {
+      background: #2e7d32;
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .add-row button:hover { background: #388e3c; }
+    .url-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .url-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #37474f;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 12px;
+      color: #b0bec5;
+    }
+    .url-item span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+    }
+    .url-item button {
+      background: none;
+      border: none;
+      color: #607d8b;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0 0 0 6px;
+      line-height: 1;
+    }
+    .url-item button:hover { color: #ef5350; }
+    .empty-msg {
+      font-size: 11px;
+      color: #546e7a;
+      text-align: center;
+      padding: 8px 0;
+    }
   </style>
 </head>
 <body>
@@ -90,6 +163,14 @@
       <span class="stat-label">Tabs protected</span>
       <span class="stat-value" id="skipped">0</span>
     </div>
+  </div>
+  <div class="protected">
+    <div class="section-label">Protected sites</div>
+    <div class="add-row">
+      <input type="text" id="urlInput" placeholder="e.g. meet.google.com">
+      <button id="addUrlBtn">Add</button>
+    </div>
+    <div class="url-list" id="urlList"></div>
   </div>
   <div class="footer">
     <button class="reset" id="resetBtn">Reset all</button>
